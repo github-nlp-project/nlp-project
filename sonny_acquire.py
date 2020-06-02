@@ -10,7 +10,6 @@ import os
 import json
 from typing import Dict, List, Optional, Union, cast
 import requests
-
 from env import github_token, github_username
 
 # TODO: Make a github personal access token.
