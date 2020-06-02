@@ -44,7 +44,7 @@ def acquire_repo_list(category):
     if (' ') in category:
         category = category.replace(' ','_')
         f_category = category.replace(' ','+')
-
+    f_category = category
     urls = [f'https://github.com/search?o=desc&p={i}\
     &q={f_category}+size:>100&s=stars&type=Repositories'\
     for i in range(1,11)]
