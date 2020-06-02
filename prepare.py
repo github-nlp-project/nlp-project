@@ -99,24 +99,23 @@ def prep_repo_data(df):
     # Remove all observations with no README
     no_readme = df[df.readme_contents == 'No README'].index
     df = df.drop(no_readme)
-    df.reset_index(drop=True)
 
     # Do basic clean on repo content
     df = basic_clean(df, 'readme_contents')
     
-    # Tokenize clean article content
+    # Tokenize clean content
     df = tokenize(df, 'basic_clean')
     
-    # Stem cleaned and tokenized article content
+    # Stem cleaned and tokenized content
     df = stem(df, 'clean_tokes')
     
-    # Remove stopwords from Lemmatized article content
+    # Remove stopwords from Stemmed content
     df = remove_stopwords(df, 'stemmed')
     
-    # Lemmatize cleaned and tokenized article content
+    # Lemmatize cleaned and tokenized content
     df = lemmatize(df, 'clean_tokes')
     
-    # Remove stopwords from Lemmatized article content
+    # Remove stopwords from Lemmatized content
     df = remove_stopwords(df, 'lemmatized')
     
-    return df[['repo', 'language', 'readme_contents', 'clean_stemmed', 'clean_lemmatized']]
+    return df[['language', 'category', 'repo', 'readme_contents', 'clean_tokes', 'clean_stemmed', 'clean_lemmatized']]
