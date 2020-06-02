@@ -96,6 +96,11 @@ def prep_repo_data(df):
     returns the df with original columns plus cleaned
     and lemmatized content without stopwords.
     '''
+    # Remove all observations with no README
+    no_readme = df[df.readme_contents == 'No README'].index
+    df = df.drop(no_readme)
+    df.reset_index(drop=True)
+
     # Do basic clean on repo content
     df = basic_clean(df, 'readme_contents')
     
