@@ -6,3 +6,4 @@ env.py
 *.xls
 *.csv
 *.txt
+*.json
