@@ -10,8 +10,11 @@ import os
 import json
 from typing import Dict, List, Optional, Union, cast
 import requests
-
+import pandas as pd
+from requests import get
+from bs4 import BeautifulSoup
 from env import github_token, github_username
+import time
 
 # TODO: Make a github personal access token.
 #     1. Go here and generate a personal access token https://github.com/settings/tokens
@@ -20,122 +23,54 @@ from env import github_token, github_username
 # TODO: Add your github username to your env.py file under the variable `github_username`
 # TODO: Add more repositories to the `REPOS` list below.
 
-REPOS = [
- 'kinverarity1/lasio',
- 'agile-geoscience/welly',
- 'akashlevy/Deep-Learn-Oil',
- 'Flaxbeard/ImmersivePetroleum',
- 'mutolisp/kh_pplines',
- 'mycarta/Data-science-tools-petroleum-exploration-and-production',
- 'GeostatisticsLessons/GeostatisticsLessonsNotebooks',
- 'f0nzie/rNodal',
- 'ICHEC/ExSeisDat',
- 'unifloc/unifloc_vba',
- 'Petroware/NpdIo',
- 'f0nzie/rNodal.oilwells',
- 'AnneEstoppey/EasyDataTools',
- 'ontop/npd-benchmark',
- 'mwentzWW/petrolpy',
- 'f0nzie/evolution_data_science_petroleum_engineering',
- 'f0nzie/vlp-bottomhole-algorithm',
- 'drceph/petroleumgenerator',
- 'fluidgeo/fluidgeo-simulator',
- 'petrocode/blackoilmsv',
- 'vehagn/tpg4155',
- 'aegis4048/Petroleum_Engineering',
- 'vishal-anand-1/Reservoir-recovery-prediction',
- 'ivarref/bp-diagrams',
- 'abhishekdbihani/synthetic_well-log_polynomial_regression',
- 'RaminMoghadasi/compsim',
- 'SumedhaSingh/Petroleum-Price-Prediction-Model',
- 'pedrolinhares/Turtle-Flow-Simulator',
- 'ovalles/PyPetroleum',
- 'duwalanise/reactriot2017-fillmeup',
- 'danielbarr3ra/Petroleum_Enginering_Codes',
- 'ishita159/petroleum_review_system',
- 'manjunath5496/Petroleum-Engineering-Books',
- 'm2b/API11_1VCF',
- 'einar90/tpg4162',
- 'zentechnologygroup/libzen',
- 'kmcken/PetroThermo',
- 'rufuspollock/shell-oil-spills-niger-delta',
- 'oilmap/oilmap',
- 'f0nzie/data_science_ptech',
- 'simulkade/peteng',
- 'stackyism/hpcl_support',
- 'Eshichi/Petroleum',
- 'salmansust/MachineLearning-TSF-PetroleumProduction',
- 'ecate/petroleum',
- 'gagetyrussell/petroleum_engineering',
- 'swethababurao/BritishPetroleum',
- 'navjotwarade/National-Petroleum',
- 'paip/dark-petroleum-atom-syntax',
- 'rezaGIS/OpenPetroleumMVC',
- 'shwrthy/Petroleum-Engineering-Rock-Mechanics',
- 'almersawi/IPR',
- 'liuyibox/ML-aided-Petroleum-Production-Predictor',
- 'ParthKhanna07/HackFest2k19',
- 'SEPC/Journal-of-Petroleum-Science-Research',
- 'hackettma/CIRES-PETRO',
- 'jimmyneutroon/alfajrsomix',
- 'kylesarre/Reverse-Auction',
- 'anandvaibhav/FormulaDeck',
- 'Bingohong/PE-DataMining',
- 'rashidwadani/Decline_Curve_Analysis_Tool',
- 'MosGeo/BPSMAutoToolbox',
- 'doneria-anjali/genome',
- 'huiyi-outsourcing/diagram',
- 'reallysaurabh/Optimization-Problems',
- 'dummybigjj/sis',
- 'ssicard/well-mapping',
- 'hellopteromyini/Cutting-edge-technology-RNN-introduction',
- 'softlandia/glasio',
- 'lehoangha/tomo2d_HeriotWatt',
- 'softlandia/glasio',
- 'cjayidoko/AAPG_Hackaton',
- 'Ahmed-Alhosany/OPA',
- 'lakhanimanan111/DataAnalysis_SemanticWeb',
- 'bcgov/mem-mmti',
- 'lastqxw/petroleum',
- 'jmarcelogimenez/petroSym',
- 'VFedyaev/RedPetroleum',
- 'GitAsura/petroleum',
- 'yousuf190/Petroleum',
- '929528/PetroleumAccounting',
- 'r4mbo7/petroleum',
- 'Rakesh2017/PetroleumDriver',
- 'ChaoLab/PetroleumMicrobiome',
- 'pdspooner/spooner-petro',
- 'jcellashton/Petroleum',
- 'zkn365/petroleum_books',
- 'khatabKhatab/petroleumfuture3.github.io',
- 'morganmadell/PetroleumDeclineAnalysis',
- 'Turbo93/petroleumPiplinePatrol',
- 'paloukari/Petroleum',
- 'IGDML/PE',
- 'rainedream/BGC-PetroleumExploration',
- 'aislen404/petroleum',
- 'XiGongZi/petroleum',
- 'bmsingh12/yipl-challenge',
- 'phamthanhnghia/de',
- 'nsankouakou/PscSystem',
- 'osgirl/BpReports',
- 'tehblooguy/Petroleum-Expansion'
-]
 
-# REPOS = [
-#     'southernstatespetroleum/Southern-States-Petroleum,'
-# ]
+def get_repo_names(url):
+    headers = {'User-Agent': 'manual search'} 
+    response = get(url, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    repos = []
+    for i in range(10):
+        repos.append(soup.find_all('a', class_='v-align-middle')\
+                 [i].text)
+        time.sleep(.8)
+    return repos
 
-# REPOS = [
-#     "gocodeup/codeup-setup-script",
-#     "gocodeup/movies-application",
-#     "torvalds/linux",
-# ]
 
-def make_repo_list(repos):
-    REPOS = repos
-    return REPOS
+def acquire_repo_list(category):
+    '''
+    This is what to run to create a json file. It should
+    be run once for every category you want to look at.
+    '''
+    if (' ') in category:
+        category = category.replace(' ','_')
+        f_category = category.replace(' ','+')
+
+    urls = [f'https://github.com/search?o=desc&p={i}\
+    &q={f_category}+size:>100&s=stars&type=Repositories'\
+    for i in range(1,11)]
+
+    test = []
+    for url in urls:
+        test += get_repo_names(url)
+        
+    if not os.path.isfile(f'{category}.json'):  
+        json.dump(test, open(f"{category}_repos.json", "w"),
+                  indent=1)
+    status = f'You now have a json file named {category}_repos.json.'
+    return status
+
+
+"""This runs to create a full list of repos of every category you 
+searched for to scrape later"""
+full_list = []
+for file in os.listdir():
+    if 'repos.json' in file:
+        full_list.append(file)
+item_list = []
+for item in full_list:
+    lm = pd.read_json(item)
+    item_list += (list(lm[0]))
+REPOS = item_list
 
 
 headers = {"Authorization": f"token {github_token}", "User-Agent": github_username}
@@ -189,16 +124,6 @@ def get_readme_download_url(files: List[Dict[str, str]]) -> str:
             return file["download_url"]
     return ""
 
-# def get_readme_download_url(files: List[Dict[str, str]]) -> str:
-#     """
-#     Takes in a response from the github api that lists the files in a repo and
-#     returns the url that can be used to download the repo's README file.
-#     """
-#     readme = 'No README'
-#     for file in files:
-#         if file["name"].lower().startswith("readme"):
-#             readme = file["download_url"]
-#     return readme
 
 def process_repo(repo: str) -> Dict[str, str]:
     """
@@ -216,9 +141,6 @@ def process_repo(repo: str) -> Dict[str, str]:
         "language": get_repo_language(repo),
         "readme_contents": readme_contents,
     }
-
-def scrape_data_clone(REPOS):
-    return [process_repo(repo) for repo in REPOS]
 
 
 def scrape_github_data() -> List[Dict[str, str]]:
