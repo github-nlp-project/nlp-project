@@ -41,10 +41,11 @@ def acquire_repo_list(category):
     This is what to run to create a json file. It should
     be run once for every category you want to look at.
     '''
+    f_category = category
     if (' ') in category:
         category = category.replace(' ','_')
         f_category = category.replace(' ','+')
-    f_category = category
+    
     urls = [f'https://github.com/search?o=desc&p={i}\
     &q={f_category}+size:>100&s=stars&type=Repositories'\
     for i in range(1,11)]
