@@ -2,6 +2,8 @@
 
 For this project, we scraped data from GitHub repository README files using GitHub's API. 
 
+![](example_readme.gif)
+
 ## Goal
 
 The primary goal for this project was to build an NLP model that can predict the primary language of REPO using the text in the README file.
