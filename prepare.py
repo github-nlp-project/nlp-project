@@ -78,6 +78,7 @@ def remove_stopwords(df, col):
     '''
     # Create stopword_list
     stopword_list = stopwords.words('english')
+    stopword_list.extend('&#9;')
     
     # Split words in column
     words = df[col].str.split()
