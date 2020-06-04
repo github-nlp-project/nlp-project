@@ -24,6 +24,13 @@ import time
 # TODO: Add more repositories to the `REPOS` list below.
 
 
+headers = {"Authorization": f"token {github_token}", "User-Agent": github_username}
+
+if headers["Authorization"] == "token " or headers["User-Agent"] == "":
+    raise Exception(
+        "You need to follow the instructions marked TODO in this script before trying to use it"
+    )
+
 def get_repo_names(url):
     headers = {'User-Agent': 'manual search'} 
     response = get(url, headers=headers)
@@ -72,15 +79,6 @@ for item in full_list:
     lm = pd.read_json(item)
     item_list += (list(lm[0]))
 REPOS = item_list
-
-
-headers = {"Authorization": f"token {github_token}", "User-Agent": github_username}
-
-if headers["Authorization"] == "token " or headers["User-Agent"] == "":
-    raise Exception(
-        "You need to follow the instructions marked TODO in this script before trying to use it"
-    )
-
 
 def github_api_request(url: str) -> Union[List, Dict]:
     response = requests.get(url, headers=headers)
