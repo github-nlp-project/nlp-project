@@ -34,11 +34,11 @@ Due to the first and second goals, this repo can be used as a means to research 
 
 > A well-documented jupyter notebook that contains your analysis.
 
-LINK TO SPECIFIC notebook
+[Check out the notebook here](https://github.com/github-nlp-project/nlp-project/blob/master/github_nlp_notebook.ipynb "Final Notebook")
 
 > Three to four slide deck suitable for a general audience that summarize your findings - including well-labelled visualizations
 
-LINK TO DECK
+[Here' the deck](https://www.canva.com/design/DAD-LM8dJPk/6-UD1UppB0-u5LeA9fjB2g/view?utm_content=DAD-LM8dJPk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink "Presentation Link")
 
 ## Exploration
 
