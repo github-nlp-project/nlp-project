@@ -2,7 +2,7 @@
 
 For this project, we scraped data from GitHub repository README files using GitHub's API. 
 
-![](example_readme.gif)
+![example readme language breakdown](example_readme.gif)
 
 ## Goal
 
