@@ -6,7 +6,7 @@ For this project, we scraped data from GitHub repository README files using GitH
 
 ## Data Dictionary
 
-**language**: Programming language used for repositort project
+**language**: Programming language used for repository project
 
 **category**: The category within the energy sector
 
@@ -55,6 +55,17 @@ Some of the questions answered in either the notebook or deck:
 ## Model
 
 How top performing model used the top 4 languages in the corpus, a TF-IDF Vectorizor, and a Random Forest Classifier. The results were 92.31% accuracy on the train dataset and 60.47% accuracy on the test dataset.
+
+## *Technical Skills used*
+
+* Python
+* Jupyter Notebook
+* VS Code
+* Various Data Science libraries (Pandas, Numpy, Matplotlib, Seaborn, Sklearn, etc.)
+* BeautifulSoup
+* nltk
+* Stats (Hypothesis testing, correlation tests)
+* Classification Models (Decision Tree, Random Forest, KNN)
 
 ## SUMMARY
 
